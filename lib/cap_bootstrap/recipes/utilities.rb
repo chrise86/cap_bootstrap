@@ -7,4 +7,13 @@ Capistrano::Configuration.instance(:must_exist).load do
       break if stream == :err    
     end
   end
+
+  desc "tail unicorn log files" 
+  task :unicorn_logs, :roles => :app do
+    run "tail -f #{shared_path}/log/unicorn.log" do |channel, stream, data|
+      puts  # for an extra line break before the host name
+      puts "#{channel[:host]}: #{data}" 
+      break if stream == :err    
+    end
+  end
 end
